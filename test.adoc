@@ -1,64 +1,81 @@
-= COS 284&mdash;Introduction to Computer Systems
+= COS 284--Introduction to Computer Systems
+Tom Nurkkala <tnurkkala@cse.taylor.edu>
+v1.0, January 2016
 
 == Introduction
 
-With your host, Dr. Tom Nurkkala
+With your host, Dr. {firstname} Nurkkala
 
-== A Section
+== Sidebar Thing
 
+Here's a sidebar!
+
+.A Sidebar
+****
+This is a sidebar.
+
+[discrete]
+== (Discrete) Header
+
+. What about
+. Numbered lists
+. Or Images
+****
+
+== The Textbook Section
+
+[sed,file="foo.html"]
+.Read the Textbook
+--
+[discrete]
+== Why?
+
+Because you'll learn a lot more.
+
+[discrete]
+== How?
+
+Here's how
+
+. Open your eyes.
+. Scan the pages.
+. Do the practice problems.
+--
+
+[sed]
+--
 In a *bitter* twist of fate,
 the previous edition (the 2^nd^) of our text,
 illustrated here:
 
-[.visual]
+image::course/cos284/images/csapp.jpg[CSAPP Cover]
+
 Has been *replaced*
 by a new edition (obviously, the 3^rd^),
 which has a fancier cover:
 
-== The Textbook Section
+image::course/cos284/images/csapp3e-cover.jpg[CSAPP 3 Cover,200]
+--
 
-[.visual]
+It's really quite a delightful text.
+- You should all read it carefully.
+
+[sidebar]
+.Factoids
 --
 Here are some interesting factoids about the course
+
+[discrete]
+=== A List
 
 . It's fun
 . You will have a great time
 . There will be a ton of work to do
 --
 
-[.visual]
-image::course/cos284/images/csapp.jpg[CSAPP Cover]
-
-image::course/cos284/images/csapp3e-cover.jpg[CSAPP 3 Cover,200]
-
-Here's some math:
-
-latexmath:[C = \alpha + \beta Y^{\gamma} + \epsilon]
-
-asciimath:[sqrt(9) = 3]
+== Stunning Conclusions
 
 NOTE: This is really cool.
-
-[.visual,dest="foo.txt"]
-Fred lives in Peru with his estranged wife, Zelda.
-
-//.A Gist from Github
-//gist::35f6b8b6d1456ee10a21[]
-
-How quickly does this preview update?
-
-It's really quite a delightful text.
-- You should all read it carefully.
-
-Here's a little code for your consumption.
-
-.Some Other Exported Stuff
-Some Greek Letters
-
-. Alpha
-. Beta
-. Gamma
-
 
 .Title for a Little Code
 [[this-is-me]]

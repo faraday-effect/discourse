@@ -3,97 +3,103 @@
 require 'asciidoctor'
 require 'asciidoctor/extensions'
 
-class ShoutBlock < Asciidoctor::Extensions::BlockProcessor
-  PeriodRx = /\.(?= |$)/
-
-  use_dsl
-
-  named :shout
-  on_context :paragraph
-  name_positional_attributes 'vol'
-  parse_content_as :simple
-
-  def process parent, reader, attrs
-    volume = ((attrs.delete 'vol') || 1).to_i
-    create_paragraph parent, (reader.lines.map {|l| l.upcase.gsub PeriodRx, '!' * volume }), attrs
-  end
-end
-
-class DumpBlock < Asciidoctor::Extensions::BlockProcessor
-  use_dsl
-
-  named :dumpblock
-  name_positional_attributes 'file'
-
-  def process parent, reader, attrs
-    puts '*' * 40
-    puts "  SELF #{self}"
-    puts " ATTRS #{attrs}"
-    puts "PARENT #{parent}"
-    puts '-' * 40
-    reader.lines.map {|line| puts line}
-    puts '-' * 40
-  end
-end
-
-class DumpTree < Asciidoctor::Extensions::Treeprocessor
-
+class ShowAST < Asciidoctor::Extensions::Treeprocessor
   def process document
-    blocks = document.find_by(role: "visual")
-    blocks.each do |block|
-      puts '=' * 40
-      # puts block.lines
-      # puts '-' * 40
-      puts block.convert
+    return unless document.blocks?
+    process_blocks document
+    nil
+  end
+
+  def tab_str depth
+    '|   ' * depth
+  end
+
+  def process_blocks node, depth = 0
+    node.blocks.each do |block|
+      print tab_str(depth), "#{block.class}, #{block.context}, #{block.attributes}"
+      if block.respond_to?('title')
+        title = block.title
+        unless title.nil? || title.empty?
+          print ", #{title}"
+        end
+      end
+      if block.respond_to?('lines')
+        lines = block.lines.map { |line| tab_str(depth + 1) + "[#{line}]" }
+        unless lines.empty?
+          print "\n", lines * "\n"
+        end
+      end
+      if block.respond_to?('text')
+        print "\n", tab_str(depth + 1), block.text
+      end
+      puts
+      process_blocks block, depth + 1 if block.blocks?
     end
   end
 end
 
-Asciidoctor::Extensions.register do
-  # block ShoutBlock
-  # block DumpBlock
-  treeprocessor DumpTree
+class SedBlock
+  @@all_blocks = []
+  def initialize(block)
+    @block = block
+    @@all_blocks << self
+  end
+
+  def attributes
+    @block.attributes
+  end
+
+  def raw
+    @block.lines
+  end
+
+  def processed
+    @block.convert
+  end
+
+  class << self
+    def all_blocks
+      @@all_blocks
+    end
+  end
 end
 
-# Asciidoctor.convert_file 'test.adoc', :safe => :safe
+class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
+  use_dsl
 
-puts "LOADING FILE"
+  named :sed
+  on_context :open
+
+  def process parent, reader, attrs
+    block = create_block parent, :open, reader.lines, attrs
+    SedBlock.new(block)
+    block
+  end
+end
+
+class DoSed < Asciidoctor::Extensions::Treeprocessor
+  def process document
+    puts '<div class="reveal">'
+    puts '<div class="slides">'
+    SedBlock.all_blocks.each do |block|
+      puts
+      puts "<section>"
+      puts block.processed
+      puts "</section>"
+    end
+    puts '</div> <!-- slides -->'
+    puts '</div> <!-- reveal -->'
+  end
+end
+
+Asciidoctor::Extensions.register do
+  block SedBlockProcessor
+  # treeprocessor ShowAST
+  treeprocessor DoSed
+end
+
+puts "<!-- LOADING FILE -->"
 doc = Asciidoctor.load_file('test.adoc', safe: :safe)
-puts "CONVERTING FILE"
+puts "<!-- CONVERTING FILE -->"
 html = doc.convert
-puts "CONVERSION COMPLETE"
-# puts html
-
-
-# doc.find_by context: :listing, style: 'source'
-#
-# result = doc.find_by(role: "visual")
-# puts result
-#
-# for block in result do
-#   puts '=' * 40
-#   puts block.convert
-# end
-
-#
-# # for block in doc.blocks do
-# #   puts block
-# # end
-#
-# #doc.find_by { |block| block.attributes.export }
-# doc = processor.$load(data, options);
-#
-# // doc.$convert();
-#
-# //// This appears to convert properly.
-#
-# find_options = opal.hash({ role: 'visual'});
-# results = doc.$find_by(find_options);
-#
-# rendered = [ ];
-# rendered[0] = results[0].$convert();
-# rendered[1] = results[1].$convert();
-#
-# rendered
-#
-# // results[0].$convert()
+puts "<!-- CONVERSION COMPLETE -->"

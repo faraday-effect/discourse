@@ -10,15 +10,12 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-asciidoctor": "^1.0.7",
     "gulp-debug": "^2.1.2",
-    "gulp-markdown": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.7",
     "gulp-wrap": "^0.11.0"
   },
   "dependencies": {
-    "express": "^4.13.3",
     "hbs": "^4.0.0",
     "highlight.js": "^9.1.0"
   }
