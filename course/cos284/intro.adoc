@@ -1,29 +1,35 @@
-#+TITLE: Introduction to ICS
-
 == Introduction to Computer Systems
+Dr. Tom Nurkkala <tnurkkala@cse.taylor.edu>
+v1.0.0, Spring, 2016
 
-With your host, Dr. Tom Nurkkala
+== Fun Facts to Know About and Tell
 
-Here are some interesting factoids about the course
+Here are some interesting factoids about the course:
+
 . It's fun
 . You will have a great time
 . There will be a ton of work to do
 
+[sed]
+--
 Here's an illustration of the cover of the textbook.
 
-#+VISUAL
-
-== In Peru
-
-Fred really _lives_ in Perul
-
-![CSAPP Cover](/images/csapp.jpg)
-
-#+NOTES
+image::/images/csapp.jpg[CS:APP Cover]
 
 It's really quite a delightful text.
-- You should all read it carefully.
 
+- You should all read it carefully.
+--
+
+--
+[discrete]
+== In Peru
+
+Fred really _lives_ in Peru!
+--
+
+
+--
 .A Code Block
 Here's a little code for your consumption.
 ```javascript
@@ -33,3 +39,4 @@ gulp.task('markdown', function() {
         .pipe(gulp.dest('build'))
 });
 ```
+--

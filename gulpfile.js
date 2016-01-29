@@ -9,18 +9,19 @@ var debug = require('gulp-debug');
 var rename = require('gulp-rename');
 var gutil = require('gulp-util');
 var asciidoctor = require('gulp-asciidoctor');
+var exec = require('gulp-exec');
 
 var through = require('through2');
 var hljs = require('highlight.js');
 var chalk = require('chalk');
 
-const VISUAL_ENV = '#+VISUAL';
-const NOTES_ENV = '#+NOTES';
-const ANY_ENV = '#+';
+//const VISUAL_ENV = '#+VISUAL';
+//const NOTES_ENV = '#+NOTES';
+//const ANY_ENV = '#+';
 
-const env_details = { };
-env_details[VISUAL_ENV] = { start_block: '<div>', end_block: '</div>' };
-env_details[NOTES_ENV] = { start_block: '', end_block: '' };
+//const env_details = { };
+//env_details[VISUAL_ENV] = { start_block: '<div>', end_block: '</div>' };
+//env_details[NOTES_ENV] = { start_block: '', end_block: '' };
 
 
 function showContents (msg) {
@@ -37,56 +38,63 @@ function showContents (msg) {
     });
 }
 
-function extractEnvironment (env) {
-    return through.obj(function (file, encoding, callback) {
-        var inEnv = false;
-        var inputLines = file.contents.toString().split(/\r\n?|\n/);
-        var outputLines = [ ];
+//function extractEnvironment (env) {
+//    return through.obj(function (file, encoding, callback) {
+//        var inEnv = false;
+//        var inputLines = file.contents.toString().split(/\r\n?|\n/);
+//        var outputLines = [ ];
+//
+//        inputLines.forEach(function (line) {
+//            gutil.log('Line', line);
+//            if (line.indexOf(env) === 0) {
+//                // Beginning of this environment
+//                if (inEnv) {
+//                    // Already in the environment; stop the current block
+//                    outputLines.push(env_details[env].end_block);
+//                }
+//                inEnv = true;
+//                outputLines.push(env_details[env].start_block);
+//                return;
+//            } else if (inEnv && line.indexOf(ANY_ENV) === 0) {
+//                // End of environment
+//                inEnv = false;
+//                outputLines.push(env_details[env].end_block);
+//                return;
+//            }
+//
+//            if (inEnv) {
+//                // Within environment
+//                outputLines.push(line);
+//            }
+//        });
+//
+//        if (inEnv) {
+//            // Still in environment at end of input
+//            outputLines.push(env_details[env].end_block);
+//        }
+//
+//        file.contents = new Buffer(outputLines.join('\n'));
+//        callback(null, file);
+//    });
+//}
 
-        inputLines.forEach(function (line) {
-            gutil.log('Line', line);
-            if (line.indexOf(env) === 0) {
-                // Beginning of this environment
-                if (inEnv) {
-                    // Already in the environment; stop the current block
-                    outputLines.push(env_details[env].end_block);
-                }
-                inEnv = true;
-                outputLines.push(env_details[env].start_block);
-                return;
-            } else if (inEnv && line.indexOf(ANY_ENV) === 0) {
-                // End of environment
-                inEnv = false;
-                outputLines.push(env_details[env].end_block);
-                return;
-            }
+//const markedOptions = {
+//    highlight: function (code) {
+//        return hljs.highlightAuto(code).value;
+//    }
+//};
 
-            if (inEnv) {
-                // Within environment
-                outputLines.push(line);
-            }
-        });
+//gulp.task('asciidoctor', function() {
+//    return gulp.src('*.adoc')
+//        .pipe(asciidoctor())
+//        .pipe(gulp.dest('.'));
+//});
 
-        if (inEnv) {
-            // Still in environment at end of input
-            outputLines.push(env_details[env].end_block);
-        }
-
-        file.contents = new Buffer(outputLines.join('\n'));
-        callback(null, file);
-    });
-}
-
-const markedOptions = {
-    highlight: function (code) {
-        return hljs.highlightAuto(code).value;
-    }
-};
-
-gulp.task('asciidoctor', function() {
-    return gulp.src('*.adoc')
-        .pipe(asciidoctor())
-        .pipe(gulp.dest('.'));
+gulp.task('adoc', function() {
+    return gulp.src('course/*/*.adoc')
+        .pipe(debug())
+        .pipe(exec('asciidoctor -D ./build <%= file.path %>'))
+        .pipe(exec.reporter());
 });
 
 gulp.task('notes', function() {

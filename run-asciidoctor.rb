@@ -3,6 +3,9 @@
 require 'asciidoctor'
 require 'asciidoctor/extensions'
 
+require 'tilt'
+require 'tilt/erubis'
+
 class ShowAST < Asciidoctor::Extensions::Treeprocessor
   def process document
     return unless document.blocks?
@@ -40,6 +43,7 @@ end
 
 class SedBlock
   @@all_blocks = []
+
   def initialize(block)
     @block = block
     @@all_blocks << self
@@ -66,7 +70,6 @@ end
 
 class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
   use_dsl
-
   named :sed
   on_context :open
 
@@ -77,29 +80,27 @@ class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
   end
 end
 
-class DoSed < Asciidoctor::Extensions::Treeprocessor
+class SedTreeProcessor < Asciidoctor::Extensions::Treeprocessor
+  def output_path document
+    ::File.join document.options[:visuals_dir], %(#{document.attributes['docname']}#{document.outfilesuffix})
+  end
+
   def process document
-    puts '<div class="reveal">'
-    puts '<div class="slides">'
-    SedBlock.all_blocks.each do |block|
-      puts
-      puts "<section>"
-      puts block.processed
-      puts "</section>"
+    template = Tilt.new(document.options[:visuals_template])
+    File.open output_path(document), 'w' do |file|
+      file.write template.render(SedBlock)
     end
-    puts '</div> <!-- slides -->'
-    puts '</div> <!-- reveal -->'
   end
 end
 
 Asciidoctor::Extensions.register do
   block SedBlockProcessor
-  # treeprocessor ShowAST
-  treeprocessor DoSed
+  treeprocessor SedTreeProcessor
+  treeprocessor ShowAST
 end
 
-puts "<!-- LOADING FILE -->"
-doc = Asciidoctor.load_file('test.adoc', safe: :safe)
-puts "<!-- CONVERTING FILE -->"
-html = doc.convert
-puts "<!-- CONVERSION COMPLETE -->"
+Asciidoctor.convert_file('course/cos284/intro.adoc',
+                         :safe => :unsafe,
+                         :visuals_template => 'templates/visuals.html.erb',
+                         :visuals_dir => '../discourse-server/course/cos284/visuals',
+                         :to_dir => '../discourse-server/course/cos284/notes')
