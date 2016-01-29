@@ -1,6 +1,7 @@
-== Introduction to Computer Systems
-Dr. Tom Nurkkala <tnurkkala@cse.taylor.edu>
+= Introduction to Computer Systems
+Tom Nurkkala <tnurkkala@cse.taylor.edu>
 v1.0.0, Spring, 2016
+:imagesdir: /cos284/images
 
 == Fun Facts to Know About and Tell
 
@@ -14,7 +15,7 @@ Here are some interesting factoids about the course:
 --
 Here's an illustration of the cover of the textbook.
 
-image::/images/csapp.jpg[CS:APP Cover]
+image::csapp.jpg[CS:APP Cover]
 
 It's really quite a delightful text.
 
@@ -28,7 +29,7 @@ It's really quite a delightful text.
 Fred really _lives_ in Peru!
 --
 
-
+[sed]
 --
 .A Code Block
 Here's a little code for your consumption.

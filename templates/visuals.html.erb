@@ -35,8 +35,8 @@
 
 <div class="reveal">
   <div class="slides">
-    <% all_blocks.each_with_index do |block, idx| %>
-      <section id="sed-seq-<%= idx %>">
+    <% all_blocks.each do |block| %>
+      <section id="<%= block.id_attribute %>">
         <%= block.processed %>
       </section>
     <% end %>

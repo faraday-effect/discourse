@@ -43,9 +43,12 @@ end
 
 class SedBlock
   @@all_blocks = []
+  @@next_seq_num = 1
 
   def initialize(block)
     @block = block
+    @seq_num = @@next_seq_num
+    @@next_seq_num += 1
     @@all_blocks << self
   end
 
@@ -61,6 +64,10 @@ class SedBlock
     @block.convert
   end
 
+  def id_attribute
+    "sed-block-#{@seq_num}"
+  end
+
   class << self
     def all_blocks
       @@all_blocks
@@ -74,9 +81,10 @@ class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
   on_context :open
 
   def process parent, reader, attrs
-    block = create_block parent, :open, reader.lines, attrs
-    SedBlock.new(block)
-    block
+    new_block = create_block parent, :open, reader.lines, attrs
+    sed_block = SedBlock.new(new_block)
+    parent << create_block(parent, :pass, %{<button href="#{sed_block.id_attribute}">Click for Visual</button>}, attrs)
+    new_block
   end
 end
 
