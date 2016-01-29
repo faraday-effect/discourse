@@ -22,7 +22,7 @@
     var link = document.createElement( 'link' );
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? '/revealjs/css/print/pdf.css' : '/revealjs/css/print/paper.css';
     document.getElementsByTagName( 'head' )[0].appendChild( link );
   </script>
 
@@ -45,6 +45,16 @@
 
 <script src="/revealjs/lib/js/head.min.js"></script>
 <script src="/revealjs/js/reveal.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    socket.on('show-visual', function(id) {
+        var indices = Reveal.getIndices(document.getElementById(id));
+        console.log('Show visual', id, indices);
+        Reveal.slide(indices.h, indices.v);
+    });
+</script>
 
 <script>
 

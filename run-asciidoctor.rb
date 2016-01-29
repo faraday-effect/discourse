@@ -83,7 +83,8 @@ class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
   def process parent, reader, attrs
     new_block = create_block parent, :open, reader.lines, attrs
     sed_block = SedBlock.new(new_block)
-    parent << create_block(parent, :pass, %{<button href="#{sed_block.id_attribute}">Click for Visual</button>}, attrs)
+    id = sed_block.id_attribute
+    parent << create_block(parent, :pass, %{<button onclick="request_visual('#{id}')">Request #{id}</button>}, attrs)
     new_block
   end
 end
@@ -101,10 +102,26 @@ class SedTreeProcessor < Asciidoctor::Extensions::Treeprocessor
   end
 end
 
+class SedPostprocessor < Asciidoctor::Extensions::Postprocessor
+  def process document, output
+    replacement = %(
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    function request_visual(id) {
+        socket.emit('request-visual', id);
+    }
+</script>
+)
+    output.sub /(?=<\/body>)/, replacement
+  end
+end
+
 Asciidoctor::Extensions.register do
   block SedBlockProcessor
   treeprocessor SedTreeProcessor
   treeprocessor ShowAST
+  postprocessor SedPostprocessor
 end
 
 Asciidoctor.convert_file('course/cos284/intro.adoc',
