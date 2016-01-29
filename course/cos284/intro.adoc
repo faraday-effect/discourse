@@ -13,13 +13,21 @@ Here are some interesting factoids about the course:
 
 [sed]
 --
-Here's an illustration of the cover of the textbook.
+In a strange twist of fate,
+the previous edition of the textbook:
 
 image::csapp.jpg[CS:APP Cover]
+--
+
+[sed]
+--
+has been replaced by a new one:
+
+image::csapp3e-cover.jpg[CS:APP 3e Cover,200]
 
 It's really quite a delightful text.
 
-- You should all read it carefully.
+- You should all read it _carefully_.
 --
 
 --

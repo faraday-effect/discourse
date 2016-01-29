@@ -81,7 +81,7 @@ class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
   on_context :open
 
   def process parent, reader, attrs
-    new_block = create_block parent, :open, reader.lines, attrs
+    new_block = create_block parent, :open, reader.lines, attrs.merge({ 'role' => 'sidebarblock' })
     sed_block = SedBlock.new(new_block)
     id = sed_block.id_attribute
     parent << create_block(parent, :pass, %{<button onclick="request_visual('#{id}')">Request #{id}</button>}, attrs)
