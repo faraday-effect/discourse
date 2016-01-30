@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 require 'asciidoctor'
 require 'asciidoctor/extensions'
 
@@ -91,11 +89,12 @@ end
 
 class SedTreeProcessor < Asciidoctor::Extensions::Treeprocessor
   def output_path document
-    ::File.join document.options[:visuals_dir], %(#{document.attributes['docname']}#{document.outfilesuffix})
+    ::File.join document.attr(:visuals_dir),
+                %(#{document.attr(:docname)}#{document.attr(:outfilesuffix)})
   end
 
   def process document
-    template = Tilt.new(document.options[:visuals_template])
+    template = Tilt.new(document.attr(:visuals_template))
     File.open output_path(document), 'w' do |file|
       file.write template.render(SedBlock)
     end
@@ -123,9 +122,3 @@ Asciidoctor::Extensions.register do
   treeprocessor ShowAST
   postprocessor SedPostprocessor
 end
-
-Asciidoctor.convert_file('course/cos284/intro.adoc',
-                         :safe => :unsafe,
-                         :visuals_template => 'templates/visuals.html.erb',
-                         :visuals_dir => '../discourse-server/course/cos284/visuals',
-                         :to_dir => '../discourse-server/course/cos284/notes')
