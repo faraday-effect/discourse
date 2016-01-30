@@ -2,11 +2,34 @@
 Tom Nurkkala <tnurkkala@cse.taylor.edu>
 v1.0.0, Spring 2016
 
-NOTEST
-
 == Review of ISA
 
-image::sdlc.jpg[System Development Life Cycle]
+Here's where we were.
+
+[sed]
+.System Development Life Cycle
+--
+image::sdlc.png[System Development Life Cycle]
+--
+
+We've completed
+
+* Planning and selection (with our customer)
+* Analysis
+* Logical design
+
+== Plan for ISD
+
+[sed]
+.All Deliverables
+--
+image::deliverables.png[Deliverables,750]
+--
+
+We have yet to do
+
+* Physical design
+* Implementation
 
 == Keys to Success
 

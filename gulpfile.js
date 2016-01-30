@@ -12,5 +12,5 @@ gulp.task('adoc', function() {
 });
 
 gulp.task('default', function() {
-    gulp.watch('./course/**/*.adoc', ['adoc']);
+    gulp.watch('./course/**/*.{adoc,jpg,png}', ['adoc']);
 });

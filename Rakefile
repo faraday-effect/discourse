@@ -12,9 +12,6 @@ SERVER_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse-server/course'
 adoc_files = Rake::FileList.new(SOURCE_DIR + '/**/*.adoc')
 image_files = Rake::FileList.new([SOURCE_DIR + '/**/*.jpg', SOURCE_DIR + '/**/*.png'])
 
-puts adoc_files
-puts image_files
-
 def source_to_server filename, type=nil
   if type
     filename.pathmap("%{/discourse,/discourse-server}d/#{type}/%n.html")
