@@ -1,0 +1,29 @@
+= Introduction and Review
+Tom Nurkkala <tnurkkala@cse.taylor.edu>
+v1.0.0, Spring 2016
+
+NOTEST
+
+== Review of ISA
+
+image::sdlc.jpg[System Development Life Cycle]
+
+== Keys to Success
+
+* Don’t Procrastinate
+* Make small, frequent steps forward
+* Work as a team
+** Distribute work equitably
+** Attend all team meetings and work session
+** Make good on your commitments
+* Engage entire team
+** Everyone must touch the code!
+** Testing, documentation, project management
+
+== Course Business
+
+* Syllabus
+* Skills Survey
+** What you know
+** Who you _want_ on your team
+** Who you _don’t want_ on your team

@@ -1,7 +1,6 @@
 = Introduction to Computer Systems
 Tom Nurkkala <tnurkkala@cse.taylor.edu>
 v1.0.0, Spring, 2016
-:imagesdir: /cos284/images
 
 == Fun Facts to Know About and Tell
 
@@ -26,7 +25,7 @@ has been replaced by a new one:
 
 image::csapp3e-cover.jpg[CS:APP 3e Cover,200]
 
-It's really quite a delightful text.
+It's really quite a *delightful* text.
 
 - You should all read it _carefully_.
 --
