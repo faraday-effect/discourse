@@ -2,21 +2,17 @@
   "name": "discourse",
   "version": "0.1.0",
   "description": "Lecturing aid",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tom Nurkkala",
   "license": "ISC",
   "devDependencies": {
+    "browser-sync": "^2.11.1",
     "gulp": "^3.9.0",
     "gulp-debug": "^2.1.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-util": "^3.0.7",
-    "gulp-wrap": "^0.11.0"
-  },
-  "dependencies": {
-    "hbs": "^4.0.0",
-    "highlight.js": "^9.1.0"
+    "gulp-exec": "^2.1.2",
+    "gulp-nodemon": "^2.0.6"
   }
 }
