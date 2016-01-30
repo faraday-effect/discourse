@@ -119,6 +119,6 @@ end
 Asciidoctor::Extensions.register do
   block SedBlockProcessor
   treeprocessor SedTreeProcessor
-  treeprocessor ShowAST
+  # treeprocessor ShowAST
   postprocessor SedPostprocessor
 end
