@@ -65,7 +65,7 @@ def run_asciidoctor(adoc_file, course, notes_file, visuals_file)
 --require asciidoctor-sed \
 --attribute visuals_template=#{DISCOURSE_DIR + '/templates/visuals.html.erb'} \
 --attribute visuals_dir=#{visuals_file.pathmap('%d')} \
---attribute imagesdir=#{'/' + course + '/images'} \
+--attribute imagesdir="/#{course}/images" \
 --destination-dir #{notes_file.pathmap('%d')} \
 #{adoc_file}}
   sh cmd

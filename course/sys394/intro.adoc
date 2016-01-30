@@ -1,6 +1,7 @@
 = Introduction and Review
 Tom Nurkkala <tnurkkala@cse.taylor.edu>
-v1.0.0, Spring 2016
+Spring 2016
+:toc: left
 
 == Review of ISA
 
@@ -9,7 +10,7 @@ Here's where we were.
 [sed]
 .System Development Life Cycle
 --
-image::sdlc.png[System Development Life Cycle]
+image::sdlc.png[System Development Life Cycle,,650]
 --
 
 We've completed
@@ -23,13 +24,25 @@ We've completed
 [sed]
 .All Deliverables
 --
-image::deliverables.png[Deliverables,750]
+image::deliverables.png[Deliverables,700]
 --
 
 We have yet to do
 
 * Physical design
 * Implementation
+
+== Teams in ISD
+
+* I will assign teams
+** Ensure adequate balance of skills
+** Honor your preferences for teammates
+* Skills Survey
+** What you know
+** Who you _want_ on your team
+** Who you _don’t want_ on your team
+* Leveraging ISA
+** Reuse the ISA designs of any ISD team member
 
 == Keys to Success
 
@@ -46,7 +59,4 @@ We have yet to do
 == Course Business
 
 * Syllabus
-* Skills Survey
-** What you know
-** Who you _want_ on your team
-** Who you _don’t want_ on your team
+* Specifications Grading
