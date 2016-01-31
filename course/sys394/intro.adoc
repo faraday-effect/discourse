@@ -17,12 +17,6 @@ Here's where we were.
 . Systems Implementation
 --
 
-//[sed]
-//.System Development Life Cycle
-//--
-//image::sdlc.png[System Development Life Cycle,,650]
-//--
-
 We've completed
 
 * Planning and selection (with our customer)
