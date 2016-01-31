@@ -1,0 +1,72 @@
+= ISD Topics
+Tom Nurkkala <tnurkkala@cse.taylor.edu>
+Spring 2016
+:toc: left
+
+== System Development Methodology
+
+. Logical-to-Physical design
+
+. Revision control
+.. Centralized
+.. Distributed
+.. Git and Github
+
+. Testing
+.. Unit testing
+.. E2E testing
+.. Manual and automated
+
+. Agile Development Process
+.. Scum.Edu
+... Daily Scrum/Standup
+... Iterations
+... Design review
+.. Roles
+... Product owner
+... Scrum Master
+.. Scheduling and estimation
+... Trello
+
+== Web Application Architecture
+
+. Historical perspective
+. Current practices
+
+=== Model
+
+. Creating a database
+.. SQL DDL
+. CRUD: Create--Read--Update--Delete
+.. SQL DML
+. Accessing database from host language
+. DB abstraction layer
+. Transactions
+
+=== View
+
+. UI Design
+.. CRAP: Contrast--Repetition--Alignment--Proximity
+. Technologies
+.. HTML5
+.. CSS3
+.. Frameworks
+. Techniques
+.. Templating
+.. Web forms
+.. Form validation
+.. Web-based queries
+.. Web-based updates
+
+=== Controller
+
+. Stateful vs. Stateless
+.. Cookies
+.. Sessions
+. Techniques
+.. Web forms
+.. Response and Redirect
+.. Form validation
+.. Web-based queries
+.. Web-based updates
+

@@ -8,10 +8,20 @@ Spring 2016
 Here's where we were.
 
 [sed]
-.System Development Life Cycle
 --
-image::sdlc.png[System Development Life Cycle,,650]
+[discrete]
+== Systems Develompent Life Cycle
+. Systems Planning and Selection
+. Systems Analysis
+. Systems Design
+. Systems Implementation
 --
+
+//[sed]
+//.System Development Life Cycle
+//--
+//image::sdlc.png[System Development Life Cycle,,650]
+//--
 
 We've completed
 
