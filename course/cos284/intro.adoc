@@ -1,51 +1,264 @@
-= Introduction to Computer Systems
+= Course Introduction
 Tom Nurkkala <tnurkkala@cse.taylor.edu>
-v1.0.0, Spring, 2016
-
-== Fun Facts to Know About and Tell
-
-Here are some interesting factoids about the course:
-
-. It's fun
-. You will have a great time
-. There will be a ton of work to do
+COS 284
+:stem: latexmath
+:sourcedir: ./code
+:imagesdir: ./images
 
 [sed]
---
-In a strange twist of fate
-(like no other),
-the previous edition of the textbook:
-
-image::csapp.jpg[CS:APP Cover]
---
-
-[sed]
---
-has been replaced by a new one:
-
-image::csapp3e-cover.jpg[CS:APP 3e Cover,200]
-
-It's really quite a *delightful* text.
-
-- You should all read it _carefully_.
---
-
 --
 [discrete]
-== In Peru
+== COS284--Introduction to Computer Systems
+[discrete]
+= Course Introduction
+[discrete]
+== Tom Nurkkala
+--
 
-Fred really _lives_ in Peru!
+== Motivation
+* Abstraction is _good_, but don’t forget _reality_
+* Most CSE courses emphasize abstraction
+** Abstract data types
+** Asymptotic analysis
+* Abstractions have limits
+** Especially in the presence of bugs
+** Understand details of underlying implementations
+* Useful outcomes
+** Become more effective programmers
+*** Find and eliminate bugs efficiently
+*** Understand and tune for program performance
+** Prepare for later classes
+
+== Programmer-Centric Course
+* Purpose
+** Show how ... +
+by knowing more about the underlying system ... +
+you can be a more effective programmer
+* Enable you to
+** Write programs that are more reliable and efficient
+** Incorporate features that require hooks into OS
+*** E.g., concurrency, signal handlers
+** Not just for dedicated hackers
+*** Bring out the hidden hacker in everyone!
+* Cover material you won’t see elsewhere
+
+[sed]
+--
+[discrete]
+= Five Great Realities
 --
 
 [sed]
 --
-.A Code Block
-Here's a little code for your consumption.
-```javascript
-gulp.task('markdown', function() {
-    return gulp.src(course)
-        .pipe(markdown())
-        .pipe(gulp.dest('build'))
-});
-```
+[discrete]
+= Reality #1
+
+An `int` isn't an integer, a `float` isn't a real
 --
+
+[sed]
+--
+Example 1:  Is stem:[x^2 \ge 0]?
+
+* For a `float`: _yes_
+* For an `int`:
+** stem:[40000 \times 40000 = 1600000000]
+** stem:[50000 \times 50000 = ] ??
+--
+
+[sed]
+--
+image::sheep.png[Counting Sheep]
+--
+
+[sed]
+--
+Example 2: Is stem:[(x + y) + z  =  x + (y + z)]?
+
+* For `int`: _yes_
+* For `float`
+** stem:[(10^{20} + -10^{20}) + 3.14 = 3.14]
+** stem:[10^{20} + (-10^{20} + 3.14) = ] ??
+--
+
+== Code Security Example
+
+[sed]
+--
+[source,c]
+.Code Security Example
+----
+include::{sourcedir}/copy_from_kernel.c[]
+----
+--
+
+Similar to code found in FreeBSD’s implementation of `getpeername`
+
+There are legions of smart people trying to find vulnerabilities in programs
+
+[sed]
+--
+[source,c]
+.Friendly Usage
+----
+#define MSIZE 528
+
+void getstuff() {
+    char mybuf[MSIZE];
+    copy_from_kernel(mybuf, MSIZE);
+    printf(“%s\n”, mybuf);
+}
+----
+[source,c]
+.Code Security Example
+----
+include::{sourcedir}/copy_from_kernel.c[]
+----
+--
+
+
+[sed]
+--
+[source,c]
+.Malicious Usage
+----
+#define MSIZE 528
+
+void getstuff() {
+    char mybuf[MSIZE];
+    copy_from_kernel(mybuf, -MSIZE);
+    /* Boom */
+}
+----
+[source,c]
+.Code Security Example
+----
+include::{sourcedir}/copy_from_kernel.c[]
+----
+--
+
+[sed]
+--
+[discrete]
+= Reality #2
+
+You've got to know assembly
+--
+
+* Probably never write assembly programs
+** Compilers are much better and more patient
+** But key to machine-level execution model
+* Behavior of programs in presence of bugs
+** High-level language models break down
+* Tuning program performance
+** Understand compiler optimizations
+** Understand sources of program inefficiency
+* Implementing system software
+** Compiler has machine code as target
+** Operating systems must manage process state
+* Creating / fighting malware
+** x86 assembly is the language of choice!
+
+[sed]
+--
+[discrete]
+= Reality #3
+
+Memory Matters
+--
+
+* Random Access Memory is an _abstraction_
+* Memory is not unbounded
+** It must be allocated and managed
+** Many applications are memory dominated
+* Memory referencing bugs pernicious
+** Effects are distant in both time and space
+* Memory performance is not uniform
+** Cache and virtual memory effects can greatly affect program performance
+** Adapting program to characteristics of memory system can lead to major speed improvements
+* C and C++ do not provide any memory protection
+** Out of bounds array references
+** Invalid pointers
+** Abuses of `malloc` and `free`
+* Can lead to nasty bugs
+** Depends on system and compiler
+** Action at a distance
+*** Corrupted object logically unrelated to one being accessed
+*** Effect of bug may be first observed long after it is generated
+* How can I deal with this?
+** Program in Java, Ruby or ML
+** Understand what possible interactions may occur
+** Tools to detect referencing errors (e.g. `valgrind`)
+
+[sed]
+.Memory Performance Example
+--
+[source,c]
+.Runs quickly
+----
+void copyij(int src[2048][2048], int dst[2048][2048])
+{
+  int i,j;
+  for (i = 0; i < 2048; i++)
+    for (j = 0; j < 2048; j++)
+      dst[i][j] = src[i][j];
+}
+----
+[source,c]
+.Runs 21 times slower
+----
+void copyji(int src[2048][2048], int dst[2048][2048])
+{
+  int i,j;
+  for (j = 0; j < 2048; j++)
+    for (i = 0; i < 2048; i++)
+      dst[i][j] = src[i][j];
+}
+----
+--
+
+* 21 times slower (Pentium 4)
+* Memory is organized hierarchically
+* Performance depends on access patterns
+** Including stepping through multi-dimensional array
+
+[sed]
+.Memory Mountain
+--
+image::memorymountain.jpg[Memory Mountain]
+--
+
+[sed]
+--
+[discrete]
+= Reality #4
+
+Performance is about more than asymptotic complexity
+--
+
+* Constant factors matter too!
+* Even exact op count doesn't predict performance
+** Easily 10:1 performance range based on code written
+** Optimize at multiple levels: algorithm, data representations, procedures, loops
+* Must understand system to optimize
+** How programs compiled and executed
+** How to measure performance and identify bottlenecks
+** How to improve performance without destroying code modularity and generality
+
+[sed]
+--
+[discrete]
+= Reality #5
+
+Computers do more than run programs
+--
+
+* Need to get data in and out
+** I/O system critical to reliability and performance
+* Communicate with over networks
+** Many system-level issues arise
+*** Concurrent operations by autonomous processes
+*** Coping with unreliable media
+*** Cross platform compatibility
+*** Complex performance issues
+

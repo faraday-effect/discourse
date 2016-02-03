@@ -66,18 +66,21 @@
     controls: true,
     progress: true,
     history: true,
-    center: false,
+    center: true,
+
+    math: {
+      mathjax: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js',
+      config: 'TeX-AMS_HTML-full'
+    },
 
     transition: 'slide', // none/fade/slide/convex/concave/zoom
 
     // Optional reveal.js plugins
     dependencies: [
       { src: '/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: '/revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: '/revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
       { src: '/revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
       { src: '/revealjs/plugin/zoom-js/zoom.js', async: true },
-      { src: '/revealjs/plugin/notes/notes.js', async: true }
+      { src: '/revealjs/plugin/math/math.js', async: true }
     ]
   });
 

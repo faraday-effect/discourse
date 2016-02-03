@@ -1,0 +1,62 @@
+= Introduction to Computer Systems
+Tom Nurkkala <tnurkkala@cse.taylor.edu>
+v1.0.0, Spring, 2016
+
+== Fun Facts to Know About and Tell
+
+Here are some interesting factoids about the course:
+
+. It's fun
+. You will have a great time
+. There will be a ton of work to do
+
+== Testing Some Images
+
+[sed]
+--
+[discrete]
+= Cache Bus
+
+image::cachebus.jpg[Cache Bus,,400]
+--
+
+
+[sed]
+--
+In a strange twist of fate
+(like no other),
+the previous edition of the textbook:
+
+image::csapp.jpg[CS:APP Cover]
+--
+
+[sed]
+--
+has been replaced by a new one:
+
+image::csapp3e-cover.jpg[CS:APP 3e Cover,200]
+
+It's really quite a *delightful* text.
+
+- You should all read it _carefully_.
+--
+
+--
+[discrete]
+== In Peru
+
+Fred really _lives_ in Peru!
+--
+
+[sed]
+--
+.A Code Block
+Here's a little code for your consumption.
+```javascript
+gulp.task('markdown', function() {
+    return gulp.src(course)
+        .pipe(markdown())
+        .pipe(gulp.dest('build'))
+});
+```
+--
