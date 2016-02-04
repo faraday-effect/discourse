@@ -6,8 +6,8 @@ require 'pathname'
 DISCOURSE_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse'
 
 # Content source and destination directories
-SOURCE_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse/course'
-SERVER_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse-server/course'
+SOURCE_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse/src'
+SERVER_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse-server/src'
 
 adoc_files = Rake::FileList.new(SOURCE_DIR + '/**/*.adoc')
 image_files = Rake::FileList.new([SOURCE_DIR + '/**/*.jpg', SOURCE_DIR + '/**/*.png'])
@@ -20,7 +20,7 @@ def source_to_server filename, type=nil
   end
 end
 
-## Extract the course name from a adoc file name.
+## Extract the src name from a adoc file name.
 def extract_course adoc_file
   m = %r{(/.*)/(\w+)/([\w\.]+)$}.match(adoc_file)
   m[2]
