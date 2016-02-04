@@ -88,14 +88,9 @@ class SedBlockProcessor < Asciidoctor::Extensions::BlockProcessor
 end
 
 class SedTreeProcessor < Asciidoctor::Extensions::Treeprocessor
-  def output_path document
-    ::File.join document.attr(:visuals_dir),
-                %(#{document.attr(:docname)}#{document.attr(:outfilesuffix)})
-  end
-
   def process document
     template = Tilt.new(document.attr(:visuals_template))
-    File.open output_path(document), 'w' do |file|
+    File.open document.attr(:visuals_file), 'w' do |file|
       file.write template.render(SedBlock)
     end
   end
