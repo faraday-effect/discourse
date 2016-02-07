@@ -2,12 +2,15 @@
 
 require 'pathname'
 
+# Find ourself in the file system.
+PARENT_DIR = Pathname.new(Dir.getwd().pathmap('%d'))
+
 # This should go away after converting asciidoctor-sed into a gem [?] or library.
-DISCOURSE_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse'
+DISCOURSE_DIR = PARENT_DIR.join('discourse')
 
 # Content source and destination directories
-SOURCE_DIR = Pathname.new('/Users/tom/Taylor/Projects/Faraday/discourse/src')
-SERVER_DIR = Pathname.new('/Users/tom/Taylor/Projects/Faraday/discourse-server/course')
+SOURCE_DIR = PARENT_DIR.join('discourse/src')
+SERVER_DIR = PARENT_DIR.join('discourse-server/course')
 
 class Adoc
   def initialize(rel_path)
@@ -76,7 +79,7 @@ def run_asciidoctor(adoc_file, notes_file, visuals_file)
 --safe-mode unsafe \
 --load-path #{DISCOURSE_DIR} \
 --require asciidoctor-sed \
---attribute visuals_template=#{DISCOURSE_DIR + '/templates/visuals.html.erb'} \
+--attribute visuals_template=#{DISCOURSE_DIR.join('templates/visuals.html.erb')} \
 --attribute visuals_file=#{visuals_file} \
 --attribute imagesdir="images" \
 --out-file #{notes_file} \
