@@ -3,7 +3,6 @@ Tom Nurkkala <tnurkkala@cse.taylor.edu>
 COS 284
 :stem: latexmath
 :sourcedir: ./code
-:imagesdir: ./images
 
 [sed]
 --

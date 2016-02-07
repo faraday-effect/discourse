@@ -1,0 +1,102 @@
+= Tour of Computer Systems
+Tom Nurkkala <tnurkkala@cse.taylor.edu>
+COS 284--Introduction to Computer Systems
+
+[sed]
+.Programs translate other programs
+--
+image::compilation.jpg[]
+--
+
+[sed]
+.Processes read and interpret instructions stored in memory
+--
+image::hardware.jpg[]
+--
+
+[sed]
+.Running `hello`: read from keyboard
+--
+image::keyboardread.jpg[]
+--
+
+[sed]
+.Running `hello`: load from disk
+--
+image::helloload.jpg[]
+--
+
+[sed]
+.Running `hello`: write to display
+--
+image::displaywrite.jpg[]
+--
+
+[sed]
+.Caches matter
+--
+image::cachebus.jpg[]
+--
+
+[sed]
+.Storage forms a hierarchy
+--
+image::memhier.jpg[]
+--
+
+[sed]
+.Operating System manages hardware
+--
+image::layers.jpg[]
+--
+
+[sed]
+.Operating System implements key abstractions
+--
+image::abstractions-os.jpg[]
+--
+
+[sed]
+.Operating System manages processes
+--
+image::switch.jpg[]
+--
+
+[sed]
+.Operating System manages run-time memory
+--
+image::rtimage.jpg[]
+--
+
+[sed]
+.Network is another I/O device
+--
+image::nethost.jpg[]
+--
+
+[sed]
+.Process running remotely over network
+--
+image::telnet.jpg[]
+--
+
+[sed]
+.Concurrency and Parallelism
+--
+image::processors.jpg[]
+--
+
+Concurrency:: General concept--multiple, simultaneous activities
+Parallelism:: Using _concurrency_ to go faster
+
+Thread-level:: multiple control flows in a single process
+
+[sed]
+.Multi-core processor (i7)
+--
+image::corei7caches.jpg[]
+--
+
+Multicore:: individual cores for multiple threads
+Hyperthreading:: one CPU running multiple threads simultaneously;
+multiple copies of segments of CPU pipeline

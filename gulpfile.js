@@ -32,11 +32,11 @@ function to_absolute_path(p) {
 }
 
 function source_glob() {
-    return path.join(to_absolute_path(argv.sourceDir), 'course', '**', '*.adoc');
+    return path.join(to_absolute_path(argv.sourceDir), 'src', '**', '*.adoc');
 }
 
 function watch_glob() {
-    return path.join(to_absolute_path(argv.sourceDir), 'course', '**', '*.{adoc,jpg,png}');
+    return path.join(to_absolute_path(argv.sourceDir), 'src', '**', '*.{adoc,jpg,png}');
 }
 
 gulp.task('adoc', function() {

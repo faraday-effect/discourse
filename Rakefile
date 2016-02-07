@@ -2,71 +2,87 @@
 
 require 'pathname'
 
+# Find ourself in the file system.
+PARENT_DIR = Pathname.new(Dir.getwd().pathmap('%d'))
+
 # This should go away after converting asciidoctor-sed into a gem [?] or library.
-DISCOURSE_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse'
+DISCOURSE_DIR = PARENT_DIR.join('discourse')
 
 # Content source and destination directories
-SOURCE_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse/course'
-SERVER_DIR = '/Users/tom/Taylor/Projects/Faraday/discourse-server/course'
+SOURCE_DIR = PARENT_DIR.join('discourse/src')
+SERVER_DIR = PARENT_DIR.join('discourse-server/course')
 
-adoc_files = Rake::FileList.new(SOURCE_DIR + '/**/*.adoc')
-image_files = Rake::FileList.new([SOURCE_DIR + '/**/*.jpg', SOURCE_DIR + '/**/*.png'])
+class Adoc
+  def initialize(rel_path)
+    @rel_path = rel_path
+  end
 
-def source_to_server filename, type=nil
-  if type
-    filename.pathmap("%{/discourse,/discourse-server}d/#{type}/%n.html")
-  else
-    filename.pathmap("%{/discourse,/discourse-server}p")
+  def adoc_path
+    SOURCE_DIR.join(@rel_path)
+  end
+
+  def notes_path
+    Rake::FileList.new(SERVER_DIR.join(@rel_path.pathmap('%X') + '-notes.html'))
+  end
+
+  def visuals_path
+    Rake::FileList.new(SERVER_DIR.join(@rel_path.pathmap('%X') + '-visuals.html'))
+  end
+
+  def to_s
+    %{#<#{self.class}:#{@rel_path}>}
   end
 end
 
-## Extract the course name from a adoc file name.
-def extract_course adoc_file
-  m = %r{(/.*)/(\w+)/([\w\.]+)$}.match(adoc_file)
-  m[2]
-end
+Dir.chdir(SOURCE_DIR)
+adocs = Rake::FileList.new('**/*.adoc').map { |path| Adoc.new(path) }
+copied_files = Rake::FileList.new('**/*.{jpg,png}', '**/*.{c,js,rb,cpp}')
 
 desc 'Convert notes'
-task :notes => adoc_files.map { |file| source_to_server(file, 'notes') }
+task :notes => adocs.map { |adoc| adoc.notes_path }
 
 desc 'Convert visuals'
-task :visuals => adoc_files.map { |file| source_to_server(file, 'visuals') }
+task :visuals => adocs.map { |adoc| adoc.visuals_path }
 
-desc 'Copy images'
-task :images => image_files.map { |file| source_to_server(file) }
+desc 'Copy other files'
+task :others => copied_files.map { |file| SERVER_DIR.join(file) }
 
-adoc_files.each do |file|
-  ['notes', 'visuals'].each do |type|
-    file source_to_server(file, type) => file do |t|
-      mkdir_p t.name.pathmap('%d')
-      run_asciidoctor(t.source,
-                      extract_course(file),
-                      source_to_server(file, 'notes'),
-                      source_to_server(file, 'visuals'))
-    end
+adocs.each do |adoc|
+  # TODO: There must be a better way to create these two file dependencies
+  file adoc.notes_path => adoc.adoc_path do |t|
+    mkdir_p t.name.pathmap('%d')
+    run_asciidoctor(t.source,
+                    adoc.notes_path,
+                    adoc.visuals_path)
+  end
+  file adoc.visuals_path => adoc.adoc_path do |t|
+    mkdir_p t.name.pathmap('%d')
+    run_asciidoctor(t.source,
+                    adoc.notes_path,
+                    adoc.visuals_path)
   end
 end
 
-image_files.each do |file|
-  file source_to_server(file) => file do |t|
+copied_files.each do |file|
+  file SERVER_DIR.join(file) => SOURCE_DIR.join(file) do |t|
     mkdir_p t.name.pathmap("%d")
     sh "cp", t.source, t.name
   end
 end
 
 desc "Default task"
-task :default => [:notes, :visuals, :images]
+task :default => [:notes, :visuals, :others]
 
-def run_asciidoctor(adoc_file, course, notes_file, visuals_file)
+def run_asciidoctor(adoc_file, notes_file, visuals_file)
   cmd = %Q{asciidoctor \
 --trace \
 --safe-mode unsafe \
 --load-path #{DISCOURSE_DIR} \
 --require asciidoctor-sed \
---attribute visuals_template=#{DISCOURSE_DIR + '/templates/visuals.html.erb'} \
---attribute visuals_dir=#{visuals_file.pathmap('%d')} \
---attribute imagesdir="/#{course}/images" \
---destination-dir #{notes_file.pathmap('%d')} \
+--attribute visuals_template=#{DISCOURSE_DIR.join('templates/visuals.html.erb')} \
+--attribute visuals_file=#{visuals_file} \
+--attribute imagesdir="images" \
+--out-file #{notes_file} \
 #{adoc_file}}
   sh cmd
 end
